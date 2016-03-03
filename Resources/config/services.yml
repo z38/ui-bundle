@@ -9,7 +9,6 @@ services:
         arguments:
             - %z38_ui.placeholders%
             - "@z38_ui.placeholder.resolver"
-            - "@?oro_security.security_facade"
 
     z38_ui.placeholder.resolver:
         class: %z38_ui.placeholder.resolver.class%

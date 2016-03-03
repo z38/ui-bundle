@@ -2,7 +2,6 @@
 
 namespace Z38\Bundle\UiBundle\Placeholder;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Component\Config\Resolver\ResolverInterface;
 
 class PlaceholderProvider
@@ -15,19 +14,14 @@ class PlaceholderProvider
     /** @var ResolverInterface */
     protected $resolver;
 
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
     /**
      * @param array             $placeholders
      * @param ResolverInterface $resolver
-     * @param SecurityFacade    $securityFacade
      */
-    public function __construct(array $placeholders, ResolverInterface $resolver, SecurityFacade $securityFacade = null)
+    public function __construct(array $placeholders, ResolverInterface $resolver)
     {
         $this->placeholders = $placeholders;
         $this->resolver = $resolver;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -72,15 +66,6 @@ class PlaceholderProvider
         }
 
         $item = $this->placeholders['items'][$itemName];
-        if (isset($item['acl'])) {
-            if ($this->isGranted($item['acl'])) {
-                // remove 'acl' attribute as it is not needed anymore
-                unset($item['acl']);
-            } else {
-                // the access denied for the requested item
-                return null;
-            }
-        }
         if (array_key_exists(self::APPLICABLE, $item)) {
             if ($this->resolveApplicable($item[self::APPLICABLE], $variables)) {
                 // remove 'applicable' attribute as it is not needed anymore
@@ -117,33 +102,5 @@ class PlaceholderProvider
         }
 
         return $resolved;
-    }
-
-    /**
-     * Checks if an access to a resource is granted to the caller
-     *
-     * @param string|array $acl
-     *
-     * @return bool
-     */
-    protected function isGranted($acl)
-    {
-        if ($this->securityFacade === null) {
-            throw new \LogicException('You can not use ACL expressions without oro_security.security_facade');
-        }
-
-        if (!is_array($acl)) {
-            return $this->securityFacade->isGranted($acl);
-        }
-
-        $result = true;
-        foreach ($acl as $val) {
-            if (!$this->securityFacade->isGranted($val)) {
-                $result = false;
-                break;
-            }
-        }
-
-        return $result;
     }
 }

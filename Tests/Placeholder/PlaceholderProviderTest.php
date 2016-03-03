@@ -2,7 +2,6 @@
 
 namespace Z38\Bundle\UiBundle\Tests\Placeholder;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Component\Config\Resolver\ResolverInterface;
 use Z38\Bundle\UiBundle\Placeholder\PlaceholderProvider;
 
@@ -15,17 +14,9 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected $resolver;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|SecurityFacade
-     */
-    protected $securityFacade;
-
     protected function setUp()
     {
         $this->resolver = $this->getMock('Oro\Component\Config\Resolver\ResolverInterface');
-        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     public function testOnlyTemplateDefined()
@@ -153,104 +144,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([], $actual);
     }
 
-    public function testAclConditionStringSuccess()
-    {
-        $this->markTestIncomplete('Oro\Bundle\SecurityBundle\SecurityFacade is not available.');
-
-        $items = ['placeholder_item' => [
-            'template' => 'template',
-            'acl' => 'acl_ancestor',
-        ]];
-
-        $variables = ['foo' => 'bar'];
-
-        $provider = $this->createProvider($items);
-        $this->securityFacade->expects($this->at(0))
-            ->method('isGranted')
-            ->with('acl_ancestor')
-            ->will($this->returnValue(true));
-
-        $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
-        unset($items['placeholder_item']['acl']);
-        $this->assertSame([], $actual);
-    }
-
-    public function testAclConditionStringFail()
-    {
-        $this->markTestIncomplete('Oro\Bundle\SecurityBundle\SecurityFacade is not available.');
-
-        $items = ['placeholder_item' => [
-            'template' => 'template',
-            'acl' => 'acl_ancestor',
-        ]];
-
-        $variables = ['foo' => 'bar'];
-
-        $provider = $this->createProvider($items);
-        $this->securityFacade->expects($this->at(0))
-            ->method('isGranted')
-            ->with('acl_ancestor')
-            ->will($this->returnValue(false));
-
-        $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
-        unset($items['placeholder_item']['acl']);
-        $this->assertSame([], $actual);
-    }
-
-    public function testAclConditionArraySuccess()
-    {
-        $this->markTestIncomplete('Oro\Bundle\SecurityBundle\SecurityFacade is not available.');
-
-        $items = ['placeholder_item' => [
-            'template' => 'template',
-            'acl' => ['acl_ancestor1', 'acl_ancestor2'],
-        ]];
-
-        $variables = ['foo' => 'bar'];
-
-        $provider = $this->createProvider($items);
-
-        $this->securityFacade->expects($this->at(0))
-            ->method('isGranted')
-            ->with('acl_ancestor1')
-            ->will($this->returnValue(true));
-        $this->securityFacade->expects($this->at(1))
-            ->method('isGranted')
-            ->with('acl_ancestor2')
-            ->will($this->returnValue(true));
-        unset($items['placeholder_item']['acl']);
-        $this->resolver->expects($this->at(0))
-            ->method('resolve')
-            ->with($items['placeholder_item'], $variables)
-            ->will($this->returnValue($items['placeholder_item']));
-
-        $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
-        unset($items['placeholder_item']['acl']);
-        $this->assertSame([$items['placeholder_item']], $actual);
-    }
-
-    public function testAclConditionArrayFail()
-    {
-        $this->markTestIncomplete('Oro\Bundle\SecurityBundle\SecurityFacade is not available.');
-
-        $items = ['placeholder_item' => [
-            'template' => 'template',
-            'acl' => ['acl_ancestor1', 'acl_ancestor2'],
-        ]];
-
-        $variables = ['foo' => 'bar'];
-
-        $provider = $this->createProvider($items);
-        $this->securityFacade->expects($this->at(0))
-            ->method('isGranted')
-            ->with('acl_ancestor1')
-            ->will($this->returnValue(false));
-
-        $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
-        unset($items['placeholder_item']['acl']);
-        $this->assertSame([], $actual);
-    }
-
     /**
      * @param array $items
      *
@@ -267,6 +160,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             'items' => $items,
         ];
 
-        return new PlaceholderProvider($placeholders, $this->resolver, $this->securityFacade);
+        return new PlaceholderProvider($placeholders, $this->resolver);
     }
 }
