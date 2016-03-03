@@ -15,6 +15,7 @@ class ArrayUtils
      *
      * @param array $first
      * @param array $second
+     *
      * @return array
      */
     public static function arrayMergeRecursiveDistinct(array $first, array $second)
@@ -88,11 +89,11 @@ class ArrayUtils
      * Please use this method only if you really need stable sorting because this method is not so fast
      * as native PHP sort functions.
      *
-     * @param array $array The array to be sorted
-     * @param bool $reverse Indicates whether the sorting should be performed
+     * @param array                        $array        The array to be sorted
+     * @param bool                         $reverse      Indicates whether the sorting should be performed
      *                                                   in reverse order
      * @param string|PropertyPathInterface $propertyPath The path of the property by which the array should be sorted
-     * @param int $sortingFlags The sorting type. Can be SORT_NUMERIC or SORT_STRING
+     * @param int                          $sortingFlags The sorting type. Can be SORT_NUMERIC or SORT_STRING
      *                                                   Also SORT_STRING can be combined with SORT_FLAG_CASE to sort
      *                                                   strings case-insensitively
      */
@@ -106,7 +107,7 @@ class ArrayUtils
             return;
         }
 
-        /**
+        /*
          * we have to implement such complex logic because the stable sorting is not supported in PHP for now
          * see https://bugs.php.net/bug.php?id=53341
          */
@@ -133,7 +134,7 @@ class ArrayUtils
     /**
      * @param mixed $a
      * @param mixed $b
-     * @param bool $stringComparison
+     * @param bool  $stringComparison
      *
      * @return int
      */
@@ -151,11 +152,11 @@ class ArrayUtils
     }
 
     /**
-     * @param array $array
+     * @param array                        $array
      * @param string|PropertyPathInterface $propertyPath
-     * @param bool $reverse
-     * @param bool $stringComparison
-     * @param bool $caseInsensitive
+     * @param bool                         $reverse
+     * @param bool                         $stringComparison
+     * @param bool                         $caseInsensitive
      *
      * @return array|null
      *
@@ -205,8 +206,8 @@ class ArrayUtils
 
     /**
      * @param array $sortable
-     * @param bool $stringComparison
-     * @param bool $reverse
+     * @param bool  $stringComparison
+     * @param bool  $reverse
      *
      * @return array
      */

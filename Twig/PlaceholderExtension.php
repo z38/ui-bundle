@@ -42,14 +42,14 @@ class PlaceholderExtension extends \Twig_Extension
         HttpKernelExtension $kernelExtension,
         RequestStack $requestStack
     ) {
-        $this->environment     = $environment;
-        $this->placeholder     = $placeholder;
+        $this->environment = $environment;
+        $this->placeholder = $placeholder;
         $this->kernelExtension = $kernelExtension;
         $this->requestStack = $requestStack;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -58,18 +58,18 @@ class PlaceholderExtension extends \Twig_Extension
                 'placeholder',
                 [$this, 'renderPlaceholder'],
                 ['is_safe' => ['html']]
-            )
+            ),
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTokenParsers()
     {
-        return array(
-            new PlaceholderTokenParser()
-        );
+        return [
+            new PlaceholderTokenParser(),
+        ];
     }
 
     /**
@@ -79,9 +79,10 @@ class PlaceholderExtension extends \Twig_Extension
      * @param array  $variables
      * @param array  $attributes Supported attributes:
      *                           'delimiter' => string
+     *
      * @return string|array
      */
-    public function renderPlaceholder($name, array $variables = array(), array $attributes = array())
+    public function renderPlaceholder($name, array $variables = [], array $attributes = [])
     {
         return implode(
             isset($attributes['delimiter']) ? $attributes['delimiter'] : '',
@@ -104,7 +105,9 @@ class PlaceholderExtension extends \Twig_Extension
      *
      * @param array $item
      * @param array $variables
+     *
      * @return string
+     *
      * @throws \RuntimeException If placeholder cannot be rendered.
      */
     protected function renderItemContent(array $item, array $variables)
@@ -118,7 +121,7 @@ class PlaceholderExtension extends \Twig_Extension
         }
 
         if (isset($item['action'])) {
-            $query = array();
+            $query = [];
             if (($request = $this->requestStack->getCurrentRequest()) !== null) {
                 $query = $request->query->all();
             }
@@ -139,11 +142,12 @@ class PlaceholderExtension extends \Twig_Extension
     /**
      * @param string $name
      * @param array  $variables
+     *
      * @return array
      */
     protected function getPlaceholderData($name, $variables)
     {
-        $result = array();
+        $result = [];
 
         $items = $this->placeholder->getPlaceholderItems($name, $variables);
         foreach ($items as $item) {

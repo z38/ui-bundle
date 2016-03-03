@@ -1,4 +1,5 @@
 <?php
+
 namespace Z38\Bundle\UiBundle\Tests\Twig\Parser;
 
 use Z38\Bundle\UiBundle\Twig\Parser\PlaceholderTokenParser;
@@ -92,13 +93,13 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLine, $actualNode->getLine());
         $this->assertEquals('placeholder', $actualNode->getNodeTag());
 
-        $expectedExpr           = new \Twig_Node_Expression_Function(
+        $expectedExpr = new \Twig_Node_Expression_Function(
             'placeholder',
             new \Twig_Node(
-                array(
-                    'name'       => $nameExpr,
-                    'variables'  => new \Twig_Node_Expression_Constant(array(), $expectedLine)
-                )
+                [
+                    'name' => $nameExpr,
+                    'variables' => new \Twig_Node_Expression_Constant([], $expectedLine),
+                ]
             ),
             $expectedLine
         );
@@ -126,7 +127,7 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseExpressionNameWithVariables()
     {
-        $expectedLine  = 101;
+        $expectedLine = 101;
         $variablesExpr = $this->createExpressionNode();
 
         $token = $this->createToken();
@@ -134,9 +135,9 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
             ->method('getLine')
             ->will($this->returnValue($expectedLine));
 
-        $nameToken      = $this->createToken();
+        $nameToken = $this->createToken();
         $nameTokenValue = 'nameTokenValue';
-        $nameTokenLine  = 102;
+        $nameTokenLine = 102;
         $nameToken->expects($this->once())
             ->method('getValue')
             ->will($this->returnValue($nameTokenValue));
@@ -174,28 +175,28 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLine, $actualNode->getLine());
         $this->assertEquals('placeholder', $actualNode->getNodeTag());
 
-        $expectedNameExpr       = new \Twig_Node_Expression_Filter_Default(
+        $expectedNameExpr = new \Twig_Node_Expression_Filter_Default(
             new \Twig_Node_Expression_Name($nameTokenValue, $nameTokenLine),
             new \Twig_Node_Expression_Constant('default', $nameTokenLine),
             new \Twig_Node(
-                array(
+                [
                     new \Twig_Node_Expression_Constant(
                         $nameTokenValue,
                         $nameTokenLine
-                    )
-                ),
-                array(),
+                    ),
+                ],
+                [],
                 $nameTokenLine
             ),
             $nameTokenLine
         );
-        $expectedExpr           = new \Twig_Node_Expression_Function(
+        $expectedExpr = new \Twig_Node_Expression_Function(
             'placeholder',
             new \Twig_Node(
-                array(
-                    'name'       => $expectedNameExpr,
-                    'variables'  => $variablesExpr
-                )
+                [
+                    'name' => $expectedNameExpr,
+                    'variables' => $variablesExpr,
+                ]
             ),
             $expectedLine
         );

@@ -10,7 +10,7 @@ use Z38\Bundle\UiBundle\Tools\ArrayUtils;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
     protected function getPlaceholdersConfigTree()
     {
         $builder = new TreeBuilder();
-        $node    = $builder->root('items');
+        $node = $builder->root('items');
 
         $node
             ->useAttributeAsKey('name')
@@ -72,7 +72,7 @@ class Configuration implements ConfigurationInterface
     protected function getPlaceholderItemsConfigTree()
     {
         $builder = new TreeBuilder();
-        $node    = $builder->root('placeholder_items');
+        $node = $builder->root('placeholder_items');
 
         $node
             ->useAttributeAsKey('name')
@@ -156,7 +156,7 @@ class Configuration implements ConfigurationInterface
     protected function getRemoveAttributeConfigTree()
     {
         $builder = new TreeBuilder();
-        $node    = $builder->root('remove', 'boolean');
+        $node = $builder->root('remove', 'boolean');
 
         $node
             ->validate()
@@ -193,6 +193,7 @@ class Configuration implements ConfigurationInterface
      * Sorts the given items by 'order' attribute
      *
      * @param array $items
+     *
      * @return mixed
      */
     protected function sortItems($items)

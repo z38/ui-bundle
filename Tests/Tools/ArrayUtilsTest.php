@@ -311,9 +311,9 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
 
     public function testSortByObject()
     {
-        $obj1  = $this->createObject(['name' => '1', 'priority' => null]);
-        $obj2  = $this->createObject(['name' => '2', 'priority' => 100]);
-        $obj3  = $this->createObject(['name' => '3', 'priority' => 0]);
+        $obj1 = $this->createObject(['name' => '1', 'priority' => null]);
+        $obj2 = $this->createObject(['name' => '2', 'priority' => 100]);
+        $obj3 = $this->createObject(['name' => '3', 'priority' => 0]);
         $array = [
             $obj1,
             $obj2,
@@ -333,13 +333,13 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
 
     public function testSortByObjectPath()
     {
-        $obj1  = $this->createObject(
+        $obj1 = $this->createObject(
             ['name' => '1', 'child' => $this->createObject(['priority' => null])]
         );
-        $obj2  = $this->createObject(
+        $obj2 = $this->createObject(
             ['name' => '2', 'child' => $this->createObject(['priority' => 100])]
         );
-        $obj3  = $this->createObject(
+        $obj3 = $this->createObject(
             ['name' => '3', 'child' => $this->createObject(['priority' => 0])]
         );
         $array = [
@@ -396,44 +396,44 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
     public function arrayColumnProvider()
     {
         return [
-            'empty'        => [[], 'value', 'value', []],
-            'no_index'     => [
+            'empty' => [[], 'value', 'value', []],
+            'no_index' => [
                 [
                     [
-                        'id'    => 'id1',
-                        'value' => 'value2'
-                    ]
+                        'id' => 'id1',
+                        'value' => 'value2',
+                    ],
                 ],
                 'value',
                 null,
-                ['value2']
+                ['value2'],
             ],
-            'index'        => [
+            'index' => [
                 [
                     [
-                        'id'    => 'id1',
-                        'value' => 'value2'
-                    ]
+                        'id' => 'id1',
+                        'value' => 'value2',
+                    ],
                 ],
                 'value',
                 'id',
-                ['id1' => 'value2']
+                ['id1' => 'value2'],
             ],
-            'wrong_index'  => [
+            'wrong_index' => [
                 [
-                    ['value' => 'value2']
+                    ['value' => 'value2'],
                 ],
                 'value',
                 'id',
-                []
+                [],
             ],
             'wrong_column' => [
                 [
-                    ['value' => 'value2']
+                    ['value' => 'value2'],
                 ],
                 'id',
                 null,
-                []
+                [],
             ],
 
         ];
@@ -465,12 +465,12 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
         return [
             'empty_column_key' => [
                 [
-                    ['id' => 'value']
+                    ['id' => 'value'],
                 ],
                 null,
                 null,
-                'Column key is empty'
-            ]
+                'Column key is empty',
+            ],
         ];
     }
 
@@ -498,12 +498,12 @@ class ArrayUtilsTest extends \PHPUnit_Framework_TestCase
                     'b',
                     'c' => [
                         'd' => 'd2',
-                        'e' => 'e1'
-                    ]
+                        'e' => 'e1',
+                    ],
                 ],
                 ['a', 'c' => ['d' => 'd1', 'e' => 'e1']],
-                ['b', 'c' => ['d' => 'd2']]
-            ]
+                ['b', 'c' => ['d' => 'd2']],
+            ],
         ];
     }
 }

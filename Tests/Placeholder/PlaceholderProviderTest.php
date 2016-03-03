@@ -3,8 +3,8 @@
 namespace Z38\Bundle\UiBundle\Tests\Placeholder;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Z38\Bundle\UiBundle\Placeholder\PlaceholderProvider;
 use Oro\Component\Config\Resolver\ResolverInterface;
+use Z38\Bundle\UiBundle\Placeholder\PlaceholderProvider;
 
 class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +22,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolver       = $this->getMock('Oro\Component\Config\Resolver\ResolverInterface');
+        $this->resolver = $this->getMock('Oro\Component\Config\Resolver\ResolverInterface');
         $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
@@ -31,7 +31,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
     public function testOnlyTemplateDefined()
     {
         $items = ['placeholder_item' => [
-                'template' => 'template'
+                'template' => 'template',
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -54,7 +54,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
     {
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'data' => '@service->getData($entity$)'
+            'data' => '@service->getData($entity$)',
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -77,7 +77,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
     {
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'applicable' => '@service1->isApplicable($entity$)'
+            'applicable' => '@service1->isApplicable($entity$)',
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -93,7 +93,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->with($items['placeholder_item'], $variables)
             ->will($this->returnValue($items['placeholder_item']));
 
-
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
 
         $this->assertSame(
@@ -106,7 +105,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
     {
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'applicable' => ['@service1->isApplicable($entity$)', '@service1->isApplicable($entity$)']
+            'applicable' => ['@service1->isApplicable($entity$)', '@service1->isApplicable($entity$)'],
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -126,7 +125,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->with($items['placeholder_item'], $variables)
             ->will($this->returnValue($items['placeholder_item']));
 
-
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
 
         $this->assertSame(
@@ -139,7 +137,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
     {
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'applicable' => ['@service1->isApplicable($entity$)', '@service1->isApplicable($entity$)']
+            'applicable' => ['@service1->isApplicable($entity$)', '@service1->isApplicable($entity$)'],
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -149,7 +147,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->method('resolve')
             ->with(['applicable' => $items['placeholder_item']['applicable'][0]], $variables)
             ->will($this->returnValue(['applicable' => false]));
-
 
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
 
@@ -162,7 +159,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'acl' => 'acl_ancestor'
+            'acl' => 'acl_ancestor',
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -172,7 +169,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
             ->with('acl_ancestor')
             ->will($this->returnValue(true));
-
 
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
         unset($items['placeholder_item']['acl']);
@@ -185,7 +181,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'acl' => 'acl_ancestor'
+            'acl' => 'acl_ancestor',
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -195,7 +191,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
             ->with('acl_ancestor')
             ->will($this->returnValue(false));
-
 
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
         unset($items['placeholder_item']['acl']);
@@ -208,7 +203,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'acl' => ['acl_ancestor1', 'acl_ancestor2']
+            'acl' => ['acl_ancestor1', 'acl_ancestor2'],
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -229,7 +224,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->with($items['placeholder_item'], $variables)
             ->will($this->returnValue($items['placeholder_item']));
 
-
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
         unset($items['placeholder_item']['acl']);
         $this->assertSame([$items['placeholder_item']], $actual);
@@ -241,7 +235,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 
         $items = ['placeholder_item' => [
             'template' => 'template',
-            'acl' => ['acl_ancestor1', 'acl_ancestor2']
+            'acl' => ['acl_ancestor1', 'acl_ancestor2'],
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -252,7 +246,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             ->with('acl_ancestor1')
             ->will($this->returnValue(false));
 
-
         $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
         unset($items['placeholder_item']['acl']);
         $this->assertSame([], $actual);
@@ -260,6 +253,7 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $items
+     *
      * @return PlaceholderProvider
      */
     protected function createProvider(array $items)
@@ -267,10 +261,10 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
         $placeholders = [
             'placeholders' => [
                 self::TEST_PLACEHOLDER => [
-                    'items' => array_keys($items)
-                ]
+                    'items' => array_keys($items),
+                ],
             ],
-            'items' => $items
+            'items' => $items,
         ];
 
         return new PlaceholderProvider($placeholders, $this->resolver, $this->securityFacade);

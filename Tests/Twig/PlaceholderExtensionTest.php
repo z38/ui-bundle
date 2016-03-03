@@ -33,7 +33,7 @@ class PlaceholderExtensionTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $kernelExtension;
-    
+
     /**
      * @var RequestStack
      */
@@ -42,19 +42,19 @@ class PlaceholderExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $placeholders = array(
-        self::PLACEHOLDER_NAME => array(
-            'items' => array(
-                array('template' => self::TEMPLATE_NAME),
-                array('action' => self::ACTION_NAME),
-            )
-        ),
-        self::INVALID_PLACEHOLDER_NAME => array(
-            'items' => array(
-                array('foo' => 'bar', 'baz' => 'bar'),
-            )
-        ),
-    );
+    protected $placeholders = [
+        self::PLACEHOLDER_NAME => [
+            'items' => [
+                ['template' => self::TEMPLATE_NAME],
+                ['action' => self::ACTION_NAME],
+            ],
+        ],
+        self::INVALID_PLACEHOLDER_NAME => [
+            'items' => [
+                ['foo' => 'bar', 'baz' => 'bar'],
+            ],
+        ],
+    ];
 
     protected function setUp()
     {
@@ -71,7 +71,7 @@ class PlaceholderExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Symfony\\Bridge\\Twig\\Extension\\HttpKernelExtension')
             ->disableOriginalConstructor()
             ->getMock();
-            
+
         $this->requestStack = new RequestStack();
 
         $this->extension = new PlaceholderExtension(
@@ -90,11 +90,11 @@ class PlaceholderExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderPlaceholder()
     {
-        $variables = array('variables' => 'test');
-        $query = array('key' => 'value');
+        $variables = ['variables' => 'test'];
+        $query = ['key' => 'value'];
         $expectedTemplateRender = '<p>template</p>';
         $expectedActionRender = '<p>action</p>';
-        $expectedResult = $expectedTemplateRender . self::DELIMITER . $expectedActionRender;
+        $expectedResult = $expectedTemplateRender.self::DELIMITER.$expectedActionRender;
 
         $request = new Request();
         $request->query->add($query);
@@ -129,7 +129,7 @@ class PlaceholderExtensionTest extends \PHPUnit_Framework_TestCase
         $result = $this->extension->renderPlaceholder(
             self::PLACEHOLDER_NAME,
             $variables,
-            array('delimiter' => self::DELIMITER)
+            ['delimiter' => self::DELIMITER]
         );
 
         $this->assertEquals($expectedResult, $result);
@@ -145,13 +145,13 @@ class PlaceholderExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->placeholderProvider->expects($this->once())
             ->method('getPlaceholderItems')
-            ->with(self::INVALID_PLACEHOLDER_NAME, array())
+            ->with(self::INVALID_PLACEHOLDER_NAME, [])
             ->will($this->returnValue($this->placeholders[self::INVALID_PLACEHOLDER_NAME]['items']));
 
         $this->extension->renderPlaceholder(
             self::INVALID_PLACEHOLDER_NAME,
-            array(),
-            array('delimiter' => self::DELIMITER)
+            [],
+            ['delimiter' => self::DELIMITER]
         );
     }
 

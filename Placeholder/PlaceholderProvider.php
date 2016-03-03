@@ -25,8 +25,8 @@ class PlaceholderProvider
      */
     public function __construct(array $placeholders, ResolverInterface $resolver, SecurityFacade $securityFacade = null)
     {
-        $this->placeholders   = $placeholders;
-        $this->resolver       = $resolver;
+        $this->placeholders = $placeholders;
+        $this->resolver = $resolver;
         $this->securityFacade = $securityFacade;
     }
 
@@ -96,7 +96,8 @@ class PlaceholderProvider
 
     /**
      * @param array|string $conditions
-     * @param array $variables
+     * @param array        $variables
+     *
      * @return bool
      */
     protected function resolveApplicable($conditions, array $variables)
@@ -106,7 +107,7 @@ class PlaceholderProvider
         foreach ($conditions as $condition) {
             $resolved = $this->resolver->resolve(
                 [
-                    self::APPLICABLE => $condition
+                    self::APPLICABLE => $condition,
                 ],
                 $variables
             )[self::APPLICABLE];
