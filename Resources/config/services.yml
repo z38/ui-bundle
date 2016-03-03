@@ -1,7 +1,9 @@
 parameters:
-    z38_ui.placeholder.provider.class:     Z38\Bundle\UiBundle\Placeholder\PlaceholderProvider
-    z38_ui.placeholder.resolver.class:     Oro\Component\Config\Resolver\SystemAwareResolver
-    z38_ui.twig.placeholder.class:         Z38\Bundle\UiBundle\Twig\PlaceholderExtension
+    z38_ui.placeholder.provider.class:           Z38\Bundle\UiBundle\Placeholder\PlaceholderProvider
+    z38_ui.placeholder.resolver.class:           Oro\Component\Config\Resolver\SystemAwareResolver
+    z38_ui.security.expression_checker.class:    Z38\Bundle\UiBundle\Security\ExpressionChecker
+    z38_ui.security.expression_language.class:   Z38\Bundle\UiBundle\Security\ExpressionLanguage
+    z38_ui.twig.placeholder.class:               Z38\Bundle\UiBundle\Twig\PlaceholderExtension
 
 services:
     z38_ui.placeholder.provider:
@@ -9,11 +11,25 @@ services:
         arguments:
             - %z38_ui.placeholders%
             - "@z38_ui.placeholder.resolver"
+            - "@z38_ui.security.expression_checker"
 
     z38_ui.placeholder.resolver:
         class: %z38_ui.placeholder.resolver.class%
         arguments:
             - "@service_container"
+
+    z38_ui.security.expression_checker:
+        class: %z38_ui.security.expression_checker.class%
+        arguments:
+            - "@z38_ui.security.expression_language"
+            - "@security.token_storage"
+            - "@security.authorization_checker"
+            - "@security.authentication.trust_resolver"
+            - "@request_stack"
+            - "@?security.role_hierarchy"
+
+    z38_ui.security.expression_language:
+        class: %z38_ui.security.expression_language.class%
 
     z38_ui.twig.placeholder_extension:
         class: %z38_ui.twig.placeholder.class%

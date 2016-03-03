@@ -14,15 +14,23 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected $resolver;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ExpressionChecker
+     */
+    protected $expressionChecker;
+
     protected function setUp()
     {
         $this->resolver = $this->getMock('Oro\Component\Config\Resolver\ResolverInterface');
+        $this->expressionChecker = $this->getMockBuilder('Z38\Bundle\UiBundle\Security\ExpressionChecker')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testOnlyTemplateDefined()
     {
         $items = ['placeholder_item' => [
-                'template' => 'template',
+            'template' => 'template',
         ]];
 
         $variables = ['foo' => 'bar'];
@@ -144,6 +152,46 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([], $actual);
     }
 
+    public function testSecureConditionSuccess()
+    {
+        $items = ['placeholder_item' => [
+            'template' => 'template',
+            'secure' => 'has_role("ROLE_ADMIN")',
+        ]];
+
+        $variables = ['foo' => 'bar'];
+
+        $provider = $this->createProvider($items);
+        $this->expressionChecker->expects($this->at(0))
+            ->method('check')
+            ->with('has_role("ROLE_ADMIN")', $variables)
+            ->will($this->returnValue(true));
+
+        $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
+        unset($items['placeholder_item']['secure']);
+        $this->assertSame([], $actual);
+    }
+
+    public function testSecureConditionFail()
+    {
+        $items = ['placeholder_item' => [
+            'template' => 'template',
+            'secure' => 'has_role("ROLE_ADMIN")',
+        ]];
+
+        $variables = ['foo' => 'bar'];
+
+        $provider = $this->createProvider($items);
+        $this->expressionChecker->expects($this->at(0))
+            ->method('check')
+            ->with('has_role("ROLE_ADMIN")', $variables)
+            ->will($this->returnValue(false));
+
+        $actual = $provider->getPlaceholderItems(self::TEST_PLACEHOLDER, $variables);
+        unset($items['placeholder_item']['secure']);
+        $this->assertSame([], $actual);
+    }
+
     /**
      * @param array $items
      *
@@ -160,6 +208,6 @@ class PlaceholderProviderTest extends \PHPUnit_Framework_TestCase
             'items' => $items,
         ];
 
-        return new PlaceholderProvider($placeholders, $this->resolver);
+        return new PlaceholderProvider($placeholders, $this->resolver, $this->expressionChecker);
     }
 }

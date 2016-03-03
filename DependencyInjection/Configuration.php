@@ -98,6 +98,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('action')->end()
                 ->scalarNode('template')->end()
+                ->scalarNode('secure')->end()
                 ->variableNode('data')->end()
             ->end()
             ->validate()

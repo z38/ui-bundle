@@ -43,6 +43,7 @@ Each placeholder item can have the following properties:
 
  - **template** or **action** - The path to Twig template or controller action is used to rendering the item.
  - **applicable** - The condition indicates whether the item can be rendered or not.
+ - **secure** - An expression which must evaluate to true. It has access to the following variables: `token`, `user`, `request`, `roles` and all passed options. It works like the [`@Security` annotation](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/security.html).
  - **data** - An additional data to be passed to the Twig template or controller.
 
 
