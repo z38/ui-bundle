@@ -1,0 +1,27 @@
+parameters:
+    z38_ui.placeholder.provider.class:     Z38\Bundle\UiBundle\Placeholder\PlaceholderProvider
+    z38_ui.placeholder.resolver.class:     Oro\Component\Config\Resolver\SystemAwareResolver
+    z38_ui.twig.placeholder.class:         Z38\Bundle\UiBundle\Twig\PlaceholderExtension
+
+services:
+    z38_ui.placeholder.provider:
+        class: %z38_ui.placeholder.provider.class%
+        arguments:
+            - %z38_ui.placeholders%
+            - "@z38_ui.placeholder.resolver"
+            - "@?oro_security.security_facade"
+
+    z38_ui.placeholder.resolver:
+        class: %z38_ui.placeholder.resolver.class%
+        arguments:
+            - "@service_container"
+
+    z38_ui.twig.placeholder_extension:
+        class: %z38_ui.twig.placeholder.class%
+        arguments:
+            - "@twig"
+            - "@z38_ui.placeholder.provider"
+            - "@twig.extension.httpkernel"
+            - "@request_stack"
+        tags:
+            - { name: twig.extension }

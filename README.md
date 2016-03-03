@@ -27,6 +27,16 @@ public function registerBundles()
 }
 ```
 
+
+## Features
+
+### Placeholders
+
+In order to improve layouts and make them more flexible a new twig token `placeholder` is implemented. It allows us to combine several blocks (templates or actions) and output them in different places in twig templates.
+
+[→ Read more](./Resources/doc/placeholders.md)
+
+
 ## Credits
 
 Many thanks go out to [Oro Inc.](http://www.orocrm.com) which built most of the features as part of [OroUIBundle](https://github.com/orocrm/platform/src/Oro/Bundle/UIBundle).
